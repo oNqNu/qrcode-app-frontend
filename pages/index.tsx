@@ -16,8 +16,7 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>Design QRcode Generator</h1>
 
         <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.tsx</code>
+          デザインQRコードを生成するアプリです．
         </p>
 
         <div className={styles.grid}>

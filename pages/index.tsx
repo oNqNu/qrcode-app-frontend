@@ -3,7 +3,25 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 
+import { useForm } from 'react-hook-form';
+import {
+  FormErrorMessage,
+  FormLabel,
+  FormControl,
+  Input,
+  Button,
+} from '@chakra-ui/react';
+
 const Home: NextPage = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  function onSubmit() {
+    console.log('test');
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -18,6 +36,29 @@ const Home: NextPage = () => {
         <p className={styles.description}>
           デザインQRコードを生成するアプリです
         </p>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">First name</FormLabel>
+            <Input
+              id="name"
+              placeholder="name"
+              {...register('name', {
+                required: 'This is required',
+                minLength: { value: 4, message: 'Minimum length should be 4' },
+              })}
+            />
+            <FormErrorMessage>error</FormErrorMessage>
+          </FormControl>
+          <Button
+            mt={4}
+            colorScheme="teal"
+            isLoading={isSubmitting}
+            type="submit"
+          >
+            Submit
+          </Button>
+        </form>
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>

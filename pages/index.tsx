@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { useForm } from "react-hook-form";
 import {
+  Heading,
   Flex,
   FormLabel,
   FormControl,
@@ -30,8 +31,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Flex flexDirection={"column"} alignItems={"center"}>
-        <h1>Design QRcode Generator</h1>
+      <Flex flexDirection={"column"} alignItems={"center"} py={"12"}>
+        <Heading size={"3xl"}>Design QRcode Generator</Heading>
 
         <p>デザインQRコードを生成するアプリです</p>
 

@@ -4,7 +4,9 @@ import Image from "next/image";
 
 import { useForm } from "react-hook-form";
 import {
+  chakra,
   Heading,
+  Text,
   Flex,
   FormLabel,
   FormControl,
@@ -34,9 +36,11 @@ const Home: NextPage = () => {
       <Flex flexDirection={"column"} alignItems={"center"} py={"12"}>
         <Heading size={"3xl"}>Design QRcode Generator</Heading>
 
-        <p>デザインQRコードを生成するアプリです</p>
+        <Text fontSize={"2xl"} pt={"4"}>
+          デザインQRコードを生成するアプリです
+        </Text>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <chakra.form onSubmit={handleSubmit(onSubmit)} pt={"4"} w={"xl"}>
           <FormControl isInvalid={true}>
             <FormLabel htmlFor="name">パラメータ1</FormLabel>
             <Input
@@ -89,7 +93,7 @@ const Home: NextPage = () => {
           >
             Submit
           </Button>
-        </form>
+        </chakra.form>
       </Flex>
     </div>
   );

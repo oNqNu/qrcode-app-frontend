@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import {
   chakra,
@@ -94,6 +93,27 @@ const Home: NextPage = () => {
             Submit
           </Button>
         </chakra.form>
+        <Button
+          mt={4}
+          colorScheme="blue"
+          onClick={() => {
+            axios
+              .get("http://localhost:8080/api/greeting")
+              .then(function (response) {
+                // handle success
+                console.log(response);
+              })
+              .catch(function (error) {
+                // handle error
+                console.log(error);
+              })
+              .then(function () {
+                // always executed
+              });
+          }}
+        >
+          Test
+        </Button>
       </Flex>
     </div>
   );

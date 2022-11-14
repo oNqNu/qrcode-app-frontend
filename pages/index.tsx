@@ -99,9 +99,9 @@ const Home: NextPage = () => {
           <FormControl isInvalid={true}>
             <FormLabel htmlFor="name">data</FormLabel>
             <Input
-              id="file_path"
+              id="data"
               value={formValues.data}
-              placeholder="file_path"
+              placeholder="data"
               onChange={(e) => handleChange("data", e.target.value)}
             />
           </FormControl>

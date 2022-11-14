@@ -13,6 +13,7 @@ import {
   Button,
   Center,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 const Home: NextPage = () => {
   const {
@@ -21,8 +22,49 @@ const Home: NextPage = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  const [formValues, setFormValues] = useState({
+    file_path: "",
+    data: "",
+    version: "",
+    ecc_level: "",
+    encoding: "",
+    mask_pattern: "",
+    traial_times: "",
+    threshold: "",
+    scale: "",
+    variance: "",
+    y_axis: "",
+    x_axis: "",
+  });
+
+  function handleChange(name, value) {
+    setFormValues((prev) => ({ ...prev, [name]: value }));
+  }
+
   function onSubmit() {
-    console.log("test");
+    console.log(formValues);
+  }
+
+  async function postData() {
+    try {
+      const response = await axios.post("http://localhost:8080/api/post_test", {
+        file_path: "src/main/resources/img/abe.jpg",
+        data: "https://www.okayama-u.ac.jp",
+        version: "5",
+        ecc_level: "0",
+        encoding: "0",
+        mask_pattern: "0",
+        traial_times: "100",
+        threshold: "96",
+        scale: "50",
+        variance: "0.7",
+        y_axis: "0.3",
+        x_axis: "0.6",
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   }
   return (
     <div>
@@ -41,49 +83,117 @@ const Home: NextPage = () => {
 
         <chakra.form onSubmit={handleSubmit(onSubmit)} pt={"4"} w={"xl"}>
           <FormControl isInvalid={true}>
-            <FormLabel htmlFor="name">パラメータ1</FormLabel>
+            <FormLabel htmlFor="name">file_path</FormLabel>
             <Input
-              id="name"
-              placeholder="name"
-              {...register("name", {
-                required: "This is required",
-                minLength: { value: 4, message: "Minimum length should be 4" },
-              })}
+              id="file_path"
+              value={formValues.file_path}
+              placeholder="file_path"
+              onChange={(e) => handleChange("file_path", e.target.value)}
             />
           </FormControl>
           <FormControl isInvalid={true}>
-            <FormLabel htmlFor="name">パラメータ2</FormLabel>
+            <FormLabel htmlFor="name">data</FormLabel>
             <Input
-              id="name"
-              placeholder="name"
-              {...register("name", {
-                required: "This is required",
-                minLength: { value: 4, message: "Minimum length should be 4" },
-              })}
+              id="file_path"
+              value={formValues.data}
+              placeholder="file_path"
+              onChange={(e) => handleChange("data", e.target.value)}
             />
           </FormControl>
           <FormControl isInvalid={true}>
-            <FormLabel htmlFor="name">パラメータ3</FormLabel>
+            <FormLabel htmlFor="name">version</FormLabel>
             <Input
-              id="name"
-              placeholder="name"
-              {...register("name", {
-                required: "This is required",
-                minLength: { value: 4, message: "Minimum length should be 4" },
-              })}
+              id="version"
+              value={formValues.version}
+              placeholder="version"
+              onChange={(e) => handleChange("version", e.target.value)}
             />
           </FormControl>
           <FormControl isInvalid={true}>
-            <FormLabel htmlFor="name">パラメータ4</FormLabel>
+            <FormLabel htmlFor="name">ecc_level</FormLabel>
             <Input
-              id="name"
-              placeholder="name"
-              {...register("name", {
-                required: "This is required",
-                minLength: { value: 4, message: "Minimum length should be 4" },
-              })}
+              id="ecc_level"
+              value={formValues.ecc_level}
+              placeholder="ecc_level"
+              onChange={(e) => handleChange("ecc_level", e.target.value)}
             />
           </FormControl>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">encoding</FormLabel>
+            <Input
+              id="encoding"
+              value={formValues.encoding}
+              placeholder="encoding"
+              onChange={(e) => handleChange("encoding", e.target.value)}
+            />
+          </FormControl>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">mask_pattern</FormLabel>
+            <Input
+              id="mask_pattern"
+              value={formValues.mask_pattern}
+              placeholder="mask_pattern"
+              onChange={(e) => handleChange("mask_pattern", e.target.value)}
+            />
+          </FormControl>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">traial_times</FormLabel>
+            <Input
+              id="traial_times"
+              value={formValues.traial_times}
+              placeholder="traial_times"
+              onChange={(e) => handleChange("traial_times", e.target.value)}
+            />
+          </FormControl>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">threshold</FormLabel>
+            <Input
+              id="threshold"
+              value={formValues.threshold}
+              placeholder="threshold"
+              onChange={(e) => handleChange("threshold", e.target.value)}
+            />
+          </FormControl>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">scale</FormLabel>
+            <Input
+              id="scale"
+              value={formValues.scale}
+              placeholder="scale"
+              onChange={(e) => handleChange("scale", e.target.value)}
+            />
+          </FormControl>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">variance</FormLabel>
+            <Input
+              id="variance"
+              value={formValues.variance}
+              placeholder="variance"
+              onChange={(e) => handleChange("variance", e.target.value)}
+            />
+          </FormControl>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">y_axis</FormLabel>
+            <Input
+              id="y_axis"
+              value={formValues.y_axis}
+              placeholder="y_axis"
+              onChange={(e) => handleChange("y_axis", e.target.value)}
+            />
+          </FormControl>
+          <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">x_axis</FormLabel>
+            <Input
+              id="x_axis"
+              value={formValues.x_axis}
+              placeholder="x_axis"
+              onChange={(e) => handleChange("x_axis", e.target.value)}
+            />
+          </FormControl>
+          {/* <FormControl isInvalid={true}>
+            <FormLabel htmlFor="name">画像を選択してください．</FormLabel>
+            <Input id="name" type="file" />
+          </FormControl> */}
           <Button
             mt={4}
             colorScheme="teal"
@@ -97,19 +207,20 @@ const Home: NextPage = () => {
           mt={4}
           colorScheme="blue"
           onClick={() => {
-            axios
-              .get("http://localhost:8080/api/greeting")
-              .then(function (response) {
-                // handle success
-                console.log(response);
-              })
-              .catch(function (error) {
-                // handle error
-                console.log(error);
-              })
-              .then(function () {
-                // always executed
-              });
+            // axios
+            //   .get("http://localhost:8080/api/greeting")
+            //   .then(function (response) {
+            //     // handle success
+            //     console.log(response);
+            //   })
+            //   .catch(function (error) {
+            //     // handle error
+            //     console.log(error);
+            //   })
+            //   .then(function () {
+            //     // always executed
+            //   });
+            postData();
           }}
         >
           Test

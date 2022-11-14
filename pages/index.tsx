@@ -23,19 +23,33 @@ const Home: NextPage = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  // const [formValues, setFormValues] = useState({
+  //   file_path: "",
+  //   data: "",
+  //   version: "",
+  //   ecc_level: "",
+  //   encoding: "",
+  //   mask_pattern: "",
+  //   traial_times: "",
+  //   threshold: "",
+  //   scale: "",
+  //   variance: "",
+  //   y_axis: "",
+  //   x_axis: "",
+  // });
   const [formValues, setFormValues] = useState({
-    file_path: "",
-    data: "",
-    version: "",
-    ecc_level: "",
-    encoding: "",
-    mask_pattern: "",
-    traial_times: "",
-    threshold: "",
-    scale: "",
-    variance: "",
-    y_axis: "",
-    x_axis: "",
+    file_path: "src/main/resources/img/abe.jpg",
+    data: "https://www.okayama-u.ac.jp",
+    version: "5",
+    ecc_level: "0",
+    encoding: "0",
+    mask_pattern: "0",
+    traial_times: "100",
+    threshold: "96",
+    scale: "50",
+    variance: "0.7",
+    y_axis: "0.3",
+    x_axis: "0.6",
   });
   const [resultImgStr, setresultImgStr] = useState("");
   const [isDisplayResult, setIsDisplayResult] = useState(false);
@@ -87,7 +101,7 @@ const Home: NextPage = () => {
         </Text>
 
         <chakra.form onSubmit={handleSubmit(onSubmit)} pt={"4"} w={"xl"}>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">file_path</FormLabel>
             <Input
               id="file_path"
@@ -96,7 +110,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("file_path", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">data</FormLabel>
             <Input
               id="data"
@@ -105,7 +119,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("data", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">version</FormLabel>
             <Input
               id="version"
@@ -114,7 +128,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("version", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">ecc_level</FormLabel>
             <Input
               id="ecc_level"
@@ -123,7 +137,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("ecc_level", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">encoding</FormLabel>
             <Input
               id="encoding"
@@ -132,7 +146,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("encoding", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">mask_pattern</FormLabel>
             <Input
               id="mask_pattern"
@@ -141,7 +155,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("mask_pattern", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">traial_times</FormLabel>
             <Input
               id="traial_times"
@@ -150,7 +164,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("traial_times", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">threshold</FormLabel>
             <Input
               id="threshold"
@@ -159,7 +173,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("threshold", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">scale</FormLabel>
             <Input
               id="scale"
@@ -168,7 +182,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("scale", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">variance</FormLabel>
             <Input
               id="variance"
@@ -177,7 +191,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("variance", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">y_axis</FormLabel>
             <Input
               id="y_axis"
@@ -186,7 +200,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("y_axis", e.target.value)}
             />
           </FormControl>
-          <FormControl isInvalid={true}>
+          <FormControl>
             <FormLabel htmlFor="name">x_axis</FormLabel>
             <Input
               id="x_axis"
@@ -195,7 +209,7 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("x_axis", e.target.value)}
             />
           </FormControl>
-          {/* <FormControl isInvalid={true}>
+          {/* <FormControl >
             <FormLabel htmlFor="name">画像を選択してください．</FormLabel>
             <Input id="name" type="file" />
           </FormControl> */}
@@ -235,6 +249,7 @@ const Home: NextPage = () => {
             <Text>aaa</Text>
             <Image
               src={`data:image/jpeg;base64,${resultImgStr}`}
+              alt="デザインQRコードです"
               width={400}
               height={400}
             />

@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import Head from "next/head";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -36,6 +37,8 @@ const Home: NextPage = () => {
     y_axis: "",
     x_axis: "",
   });
+  const [resultImgStr, setresultImgStr] = useState("");
+  const [isDisplayResult, setIsDisplayResult] = useState(false);
 
   function handleChange(name, value) {
     setFormValues((prev) => ({ ...prev, [name]: value }));
@@ -61,7 +64,9 @@ const Home: NextPage = () => {
         y_axis: "0.3",
         x_axis: "0.6",
       });
-      console.log(response.data);
+      setresultImgStr(response.data);
+      setIsDisplayResult(true);
+      console.log(typeof response.data);
     } catch (error) {
       console.error(error);
     }
@@ -225,6 +230,16 @@ const Home: NextPage = () => {
         >
           Test
         </Button>
+        {isDisplayResult ? (
+          <>
+            <Text>aaa</Text>
+            <Image
+              src={`data:image/jpeg;base64,${resultImgStr}`}
+              width={400}
+              height={400}
+            />
+          </>
+        ) : null}
       </Flex>
     </div>
   );

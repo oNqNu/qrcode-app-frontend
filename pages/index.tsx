@@ -38,7 +38,8 @@ const Home: NextPage = () => {
   //   x_axis: "",
   // });
   const [formValues, setFormValues] = useState({
-    file_path: "src/main/resources/img/abe.jpg",
+    file_path: "",
+    img_string: "",
     data: "https://www.okayama-u.ac.jp",
     version: "5",
     ecc_level: "0",
@@ -58,9 +59,43 @@ const Home: NextPage = () => {
     setFormValues((prev) => ({ ...prev, [name]: value }));
   }
 
-  function onSubmit() {
+  async function onSubmit() {
     console.log(formValues);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/post_test2",
+        formValues
+      );
+      setresultImgStr(response.data);
+      setIsDisplayResult(true);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  // function convert(file) {
+  //   const fr = new FileReader();
+  //       fr.onload = (e) => {
+  //           // readAsDataURL実行後の処理
+  //           // e.target.resultでbase64文字列を取得
+  //       };
+  //   };
+  //   fr.readAsDataURL(file);
+  // }
+
+  const handleOnAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const reader = new FileReader();
+    const img: File = e.target.files[0];
+    reader.readAsDataURL(img);
+    reader.onload = () => {
+      console.log(reader.result);
+      const data_uri = reader.result;
+      if (data_uri == null) return;
+      handleChange("img_string", data_uri);
+    };
+  };
 
   async function postData() {
     try {
@@ -101,13 +136,23 @@ const Home: NextPage = () => {
         </Text>
 
         <chakra.form onSubmit={handleSubmit(onSubmit)} pt={"4"} w={"xl"}>
-          <FormControl>
+          {/* <FormControl>
             <FormLabel htmlFor="name">file_path</FormLabel>
             <Input
               id="file_path"
               value={formValues.file_path}
               placeholder="file_path"
               onChange={(e) => handleChange("file_path", e.target.value)}
+            />
+          </FormControl> */}
+          <FormControl>
+            <FormLabel htmlFor="name">file_path</FormLabel>
+            <Input
+              type="file"
+              accept="image/*,.png,.jpg,.jpeg,"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                handleOnAddImage(e);
+              }}
             />
           </FormControl>
           <FormControl>

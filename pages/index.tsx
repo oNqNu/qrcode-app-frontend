@@ -134,9 +134,9 @@ const Home: NextPage = () => {
         <Text fontSize={"2xl"} pt={"4"}>
           デザインQRコードを生成するアプリです
         </Text>
-
-        <chakra.form onSubmit={handleSubmit(onSubmit)} pt={"4"} w={"xl"}>
-          {/* <FormControl>
+        {!isDisplayResult ? (
+          <chakra.form onSubmit={handleSubmit(onSubmit)} pt={"4"} w={"xl"}>
+            {/* <FormControl>
             <FormLabel htmlFor="name">file_path</FormLabel>
             <Input
               id="file_path"
@@ -145,159 +145,147 @@ const Home: NextPage = () => {
               onChange={(e) => handleChange("file_path", e.target.value)}
             />
           </FormControl> */}
-          <FormControl>
-            <FormLabel htmlFor="name">file_path</FormLabel>
-            <Input
-              type="file"
-              accept="image/*,.png,.jpg,.jpeg,"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                handleOnAddImage(e);
-              }}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">data</FormLabel>
-            <Input
-              id="data"
-              value={formValues.data}
-              placeholder="data"
-              onChange={(e) => handleChange("data", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">version</FormLabel>
-            <Input
-              id="version"
-              value={formValues.version}
-              placeholder="version"
-              onChange={(e) => handleChange("version", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">ecc_level</FormLabel>
-            <Input
-              id="ecc_level"
-              value={formValues.ecc_level}
-              placeholder="ecc_level"
-              onChange={(e) => handleChange("ecc_level", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">encoding</FormLabel>
-            <Input
-              id="encoding"
-              value={formValues.encoding}
-              placeholder="encoding"
-              onChange={(e) => handleChange("encoding", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">mask_pattern</FormLabel>
-            <Input
-              id="mask_pattern"
-              value={formValues.mask_pattern}
-              placeholder="mask_pattern"
-              onChange={(e) => handleChange("mask_pattern", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">traial_times</FormLabel>
-            <Input
-              id="traial_times"
-              value={formValues.traial_times}
-              placeholder="traial_times"
-              onChange={(e) => handleChange("traial_times", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">threshold</FormLabel>
-            <Input
-              id="threshold"
-              value={formValues.threshold}
-              placeholder="threshold"
-              onChange={(e) => handleChange("threshold", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">scale</FormLabel>
-            <Input
-              id="scale"
-              value={formValues.scale}
-              placeholder="scale"
-              onChange={(e) => handleChange("scale", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">variance</FormLabel>
-            <Input
-              id="variance"
-              value={formValues.variance}
-              placeholder="variance"
-              onChange={(e) => handleChange("variance", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">y_axis</FormLabel>
-            <Input
-              id="y_axis"
-              value={formValues.y_axis}
-              placeholder="y_axis"
-              onChange={(e) => handleChange("y_axis", e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="name">x_axis</FormLabel>
-            <Input
-              id="x_axis"
-              value={formValues.x_axis}
-              placeholder="x_axis"
-              onChange={(e) => handleChange("x_axis", e.target.value)}
-            />
-          </FormControl>
-          {/* <FormControl >
+            <FormControl>
+              <FormLabel htmlFor="name">file_path</FormLabel>
+              <Input
+                type="file"
+                accept="image/*,.png,.jpg,.jpeg,"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  handleOnAddImage(e);
+                }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">data</FormLabel>
+              <Input
+                id="data"
+                value={formValues.data}
+                placeholder="data"
+                onChange={(e) => handleChange("data", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">version</FormLabel>
+              <Input
+                id="version"
+                value={formValues.version}
+                placeholder="version"
+                onChange={(e) => handleChange("version", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">ecc_level</FormLabel>
+              <Input
+                id="ecc_level"
+                value={formValues.ecc_level}
+                placeholder="ecc_level"
+                onChange={(e) => handleChange("ecc_level", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">encoding</FormLabel>
+              <Input
+                id="encoding"
+                value={formValues.encoding}
+                placeholder="encoding"
+                onChange={(e) => handleChange("encoding", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">mask_pattern</FormLabel>
+              <Input
+                id="mask_pattern"
+                value={formValues.mask_pattern}
+                placeholder="mask_pattern"
+                onChange={(e) => handleChange("mask_pattern", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">traial_times</FormLabel>
+              <Input
+                id="traial_times"
+                value={formValues.traial_times}
+                placeholder="traial_times"
+                onChange={(e) => handleChange("traial_times", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">threshold</FormLabel>
+              <Input
+                id="threshold"
+                value={formValues.threshold}
+                placeholder="threshold"
+                onChange={(e) => handleChange("threshold", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">scale</FormLabel>
+              <Input
+                id="scale"
+                value={formValues.scale}
+                placeholder="scale"
+                onChange={(e) => handleChange("scale", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">variance</FormLabel>
+              <Input
+                id="variance"
+                value={formValues.variance}
+                placeholder="variance"
+                onChange={(e) => handleChange("variance", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">y_axis</FormLabel>
+              <Input
+                id="y_axis"
+                value={formValues.y_axis}
+                placeholder="y_axis"
+                onChange={(e) => handleChange("y_axis", e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">x_axis</FormLabel>
+              <Input
+                id="x_axis"
+                value={formValues.x_axis}
+                placeholder="x_axis"
+                onChange={(e) => handleChange("x_axis", e.target.value)}
+              />
+            </FormControl>
+            {/* <FormControl >
             <FormLabel htmlFor="name">画像を選択してください．</FormLabel>
             <Input id="name" type="file" />
           </FormControl> */}
-          <Button
-            mt={4}
-            colorScheme="teal"
-            isLoading={isSubmitting}
-            type="submit"
-          >
-            Submit
-          </Button>
-        </chakra.form>
-        <Button
-          mt={4}
-          colorScheme="blue"
-          onClick={() => {
-            // axios
-            //   .get("http://localhost:8080/api/greeting")
-            //   .then(function (response) {
-            //     // handle success
-            //     console.log(response);
-            //   })
-            //   .catch(function (error) {
-            //     // handle error
-            //     console.log(error);
-            //   })
-            //   .then(function () {
-            //     // always executed
-            //   });
-            postData();
-          }}
-        >
-          Test
-        </Button>
+            <Button
+              mt={4}
+              colorScheme="teal"
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </chakra.form>
+        ) : null}
+
         {isDisplayResult ? (
           <>
-            <Text>aaa</Text>
             <Image
               src={`data:image/jpeg;base64,${resultImgStr}`}
               alt="デザインQRコードです"
               width={400}
               height={400}
             />
+            <Button
+              mt={4}
+              colorScheme="blue"
+              onClick={() => {
+                setIsDisplayResult(false);
+              }}
+            >
+              別の画像で試す．
+            </Button>
           </>
         ) : null}
       </Flex>

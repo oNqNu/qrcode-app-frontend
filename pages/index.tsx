@@ -15,6 +15,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { BiDownload } from "react-icons/bi";
 
 const Home: NextPage = () => {
   const {
@@ -49,8 +50,8 @@ const Home: NextPage = () => {
     threshold: "96",
     scale: "50",
     variance: "0.7",
-    y_axis: "0.3",
-    x_axis: "0.6",
+    y_axis: "0.5",
+    x_axis: "0.5",
   });
   const [resultImgStr, setresultImgStr] = useState("");
   const [isDisplayResult, setIsDisplayResult] = useState(false);
@@ -66,6 +67,18 @@ const Home: NextPage = () => {
         "http://localhost:8080/api/post_test2",
         formValues
       );
+      setresultImgStr(response.data);
+      setIsDisplayResult(true);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function onClickCheckButton() {
+    console.log(formValues);
+    try {
+      const response = await axios.get("http://localhost:8080/api/qr-test");
       setresultImgStr(response.data);
       setIsDisplayResult(true);
       console.log(response.data);
@@ -146,7 +159,7 @@ const Home: NextPage = () => {
             />
           </FormControl> */}
             <FormControl>
-              <FormLabel htmlFor="name">file_path</FormLabel>
+              <FormLabel htmlFor="name">背景に設定する画像</FormLabel>
               <Input
                 type="file"
                 accept="image/*,.png,.jpg,.jpeg,"
@@ -159,6 +172,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">data</FormLabel>
               <Input
                 id="data"
+                variant="filled"
                 value={formValues.data}
                 placeholder="data"
                 onChange={(e) => handleChange("data", e.target.value)}
@@ -168,6 +182,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">version</FormLabel>
               <Input
                 id="version"
+                variant="filled"
                 value={formValues.version}
                 placeholder="version"
                 onChange={(e) => handleChange("version", e.target.value)}
@@ -177,6 +192,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">ecc_level</FormLabel>
               <Input
                 id="ecc_level"
+                variant="filled"
                 value={formValues.ecc_level}
                 placeholder="ecc_level"
                 onChange={(e) => handleChange("ecc_level", e.target.value)}
@@ -186,6 +202,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">encoding</FormLabel>
               <Input
                 id="encoding"
+                variant="filled"
                 value={formValues.encoding}
                 placeholder="encoding"
                 onChange={(e) => handleChange("encoding", e.target.value)}
@@ -195,6 +212,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">mask_pattern</FormLabel>
               <Input
                 id="mask_pattern"
+                variant="filled"
                 value={formValues.mask_pattern}
                 placeholder="mask_pattern"
                 onChange={(e) => handleChange("mask_pattern", e.target.value)}
@@ -204,6 +222,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">traial_times</FormLabel>
               <Input
                 id="traial_times"
+                variant="filled"
                 value={formValues.traial_times}
                 placeholder="traial_times"
                 onChange={(e) => handleChange("traial_times", e.target.value)}
@@ -213,6 +232,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">threshold</FormLabel>
               <Input
                 id="threshold"
+                variant="filled"
                 value={formValues.threshold}
                 placeholder="threshold"
                 onChange={(e) => handleChange("threshold", e.target.value)}
@@ -222,6 +242,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">scale</FormLabel>
               <Input
                 id="scale"
+                variant="filled"
                 value={formValues.scale}
                 placeholder="scale"
                 onChange={(e) => handleChange("scale", e.target.value)}
@@ -231,6 +252,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">variance</FormLabel>
               <Input
                 id="variance"
+                variant="filled"
                 value={formValues.variance}
                 placeholder="variance"
                 onChange={(e) => handleChange("variance", e.target.value)}
@@ -240,6 +262,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">y_axis</FormLabel>
               <Input
                 id="y_axis"
+                variant="filled"
                 value={formValues.y_axis}
                 placeholder="y_axis"
                 onChange={(e) => handleChange("y_axis", e.target.value)}
@@ -249,6 +272,7 @@ const Home: NextPage = () => {
               <FormLabel htmlFor="name">x_axis</FormLabel>
               <Input
                 id="x_axis"
+                variant="filled"
                 value={formValues.x_axis}
                 placeholder="x_axis"
                 onChange={(e) => handleChange("x_axis", e.target.value)}
@@ -266,6 +290,9 @@ const Home: NextPage = () => {
             >
               Submit
             </Button>
+            <Button mt={4} colorScheme="teal" onClick={onClickCheckButton}>
+              Check
+            </Button>
           </chakra.form>
         ) : null}
 
@@ -277,15 +304,34 @@ const Home: NextPage = () => {
               width={400}
               height={400}
             />
-            <Button
-              mt={4}
-              colorScheme="blue"
-              onClick={() => {
-                setIsDisplayResult(false);
-              }}
-            >
-              別の画像で試す．
-            </Button>
+            <Flex gap={12}>
+              <Button
+                mt={4}
+                colorScheme="blue"
+                onClick={() => {
+                  setIsDisplayResult(false);
+                }}
+              >
+                別の画像で試す
+              </Button>
+              <Button
+                as="a"
+                href={`data:image/jpeg;base64,${resultImgStr}`}
+                download
+                bgColor="green.500"
+                color="white"
+                mt="4"
+                mr="4"
+                _hover={{
+                  color: "blue.500",
+                  bgColor: "white",
+                  border: "1px",
+                  borderColor: "blue.500",
+                }}
+              >
+                <BiDownload size="30px" />
+              </Button>
+            </Flex>
           </>
         ) : null}
       </Flex>

@@ -24,20 +24,6 @@ const Home: NextPage = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  // const [formValues, setFormValues] = useState({
-  //   file_path: "",
-  //   data: "",
-  //   version: "",
-  //   ecc_level: "",
-  //   encoding: "",
-  //   mask_pattern: "",
-  //   traial_times: "",
-  //   threshold: "",
-  //   scale: "",
-  //   variance: "",
-  //   y_axis: "",
-  //   x_axis: "",
-  // });
   const [formValues, setFormValues] = useState({
     file_path: "",
     img_string: "",

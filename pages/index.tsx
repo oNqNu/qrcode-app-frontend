@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
-import Image from "next/image";
+import { Image as NextImage } from "next/image";
 import Head from "next/head";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import ReactCrop, { Crop } from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 import {
   chakra,
   Heading,
@@ -40,7 +42,16 @@ const Home: NextPage = () => {
     x_axis: "0.5",
   });
   const [resultImgStr, setresultImgStr] = useState("");
+  const [selectedImgStr, setSelectedImgStr] = useState("");
   const [isDisplayResult, setIsDisplayResult] = useState(false);
+  const [selectedImageSize, setSelectedImageSize] = useState({ x: 0, y: 0 });
+  const [crop, setCrop] = useState<Crop>({
+    unit: "px", // Can be 'px' or '%'
+    x: 25,
+    y: 25,
+    width: 50,
+    height: 50,
+  });
 
   function handleChange(name, value) {
     setFormValues((prev) => ({ ...prev, [name]: value }));
@@ -62,15 +73,19 @@ const Home: NextPage = () => {
   }
 
   async function onClickCheckButton() {
-    console.log(formValues);
-    try {
-      const response = await axios.get("http://localhost:8080/api/qr-test");
-      setresultImgStr(response.data);
-      setIsDisplayResult(true);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+    // console.log(formValues);
+    // try {
+    //   const response = await axios.get("http://localhost:8080/api/qr-test");
+    //   setresultImgStr(response.data);
+    //   setIsDisplayResult(true);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    const image = new Image();
+    image.src = selectedImgStr;
+    const size = { width: image.width, height: image.height };
+    console.log(size);
   }
 
   // function convert(file) {
@@ -87,9 +102,13 @@ const Home: NextPage = () => {
     if (!e.target.files) return;
     const reader = new FileReader();
     const img: File = e.target.files[0];
+    const image = new Image();
     reader.readAsDataURL(img);
     reader.onload = () => {
+      if (reader.result == null) return;
       console.log(reader.result);
+      setSelectedImgStr(reader.result);
+
       const data_uri = reader.result;
       if (data_uri == null) return;
       handleChange("img_string", data_uri);
@@ -133,6 +152,15 @@ const Home: NextPage = () => {
         <Text fontSize={"2xl"} pt={"4"}>
           デザインQRコードを生成するアプリです
         </Text>
+        <ReactCrop
+          crop={crop}
+          onChange={(c) => {
+            setCrop(c);
+            console.log(crop);
+          }}
+        >
+          <img id="crop" src="abe.jpg" />
+        </ReactCrop>
         {!isDisplayResult ? (
           <chakra.form onSubmit={handleSubmit(onSubmit)} pt={"4"} w={"xl"}>
             {/* <FormControl>
@@ -264,6 +292,7 @@ const Home: NextPage = () => {
                 onChange={(e) => handleChange("x_axis", e.target.value)}
               />
             </FormControl>
+
             {/* <FormControl >
             <FormLabel htmlFor="name">画像を選択してください．</FormLabel>
             <Input id="name" type="file" />
@@ -284,7 +313,7 @@ const Home: NextPage = () => {
 
         {isDisplayResult ? (
           <>
-            <Image
+            <NextImage
               src={`data:image/jpeg;base64,${resultImgStr}`}
               alt="デザインQRコードです"
               width={400}

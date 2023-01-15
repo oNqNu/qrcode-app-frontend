@@ -1,7 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
-import Image from 'next/image';
-// import { Image as NextImage } from 'next/image';
+import { Image as NextImage } from 'next/image';
 import Head from 'next/head';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
@@ -21,7 +19,7 @@ import {
 import { useState } from 'react';
 import { BiDownload } from 'react-icons/bi';
 
-const Home: NextPage = () => {
+const Full: NextPage = () => {
   const {
     handleSubmit,
     register,
@@ -69,7 +67,6 @@ const Home: NextPage = () => {
       setresultImgStr(response.data);
       setIsDisplayResult(true);
       console.log(response.data);
-      console.log('いけてんで');
     } catch (error) {
       console.error(error);
     }
@@ -85,27 +82,25 @@ const Home: NextPage = () => {
     // } catch (error) {
     //   console.error(error);
     // }
-    // const image = new Image();
-    // image.src = selectedImgStr;
-    // const size = { width: image.width, height: image.height };
-    // console.log(size);
+    const image = new Image();
+    image.src = selectedImgStr;
+    const size = { width: image.width, height: image.height };
+    console.log(size);
   }
 
   const handleOnAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const reader = new FileReader();
     const img: File = e.target.files[0];
-    // const image = new Image();
+    const image = new Image();
     reader.readAsDataURL(img);
     reader.onload = () => {
       if (reader.result == null) return;
-      console.log('aaa');
       console.log(reader.result);
       setSelectedImgStr(reader.result);
 
       const data_uri = reader.result;
       if (data_uri == null) return;
-      console.log(data_uri);
       handleChange('img_string', data_uri);
     };
   };
@@ -147,15 +142,7 @@ const Home: NextPage = () => {
         <Text fontSize={'2xl'} pt={'4'}>
           デザインQRコードを生成するアプリです
         </Text>
-        {/* <ReactCrop
-          crop={crop}
-          onChange={(c) => {
-            setCrop(c);
-            console.log(crop);
-          }}
-        >
-          <img id="crop" src="abe.jpg" />
-        </ReactCrop> */}
+
         {!isDisplayResult ? (
           <chakra.form onSubmit={handleSubmit(onSubmit)} pt={'4'} w={'xl'}>
             <FormControl>
@@ -176,20 +163,108 @@ const Home: NextPage = () => {
                 value={formValues.data}
                 placeholder="data"
                 onChange={(e) => handleChange('data', e.target.value)}
-                mb="12"
               />
             </FormControl>
-            {!!selectedImgStr ? (
-              <ReactCrop
-                crop={crop}
-                onChange={(c) => {
-                  setCrop(c);
-                  console.log(crop);
-                }}
-              >
-                <img id="crop" src={`${selectedImgStr}`} />
-              </ReactCrop>
-            ) : null}
+            <FormControl>
+              <FormLabel htmlFor="name">version</FormLabel>
+              <Input
+                id="version"
+                variant="filled"
+                value={formValues.version}
+                placeholder="version"
+                onChange={(e) => handleChange('version', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">ecc_level</FormLabel>
+              <Input
+                id="ecc_level"
+                variant="filled"
+                value={formValues.ecc_level}
+                placeholder="ecc_level"
+                onChange={(e) => handleChange('ecc_level', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">encoding</FormLabel>
+              <Input
+                id="encoding"
+                variant="filled"
+                value={formValues.encoding}
+                placeholder="encoding"
+                onChange={(e) => handleChange('encoding', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">mask_pattern</FormLabel>
+              <Input
+                id="mask_pattern"
+                variant="filled"
+                value={formValues.mask_pattern}
+                placeholder="mask_pattern"
+                onChange={(e) => handleChange('mask_pattern', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">traial_times</FormLabel>
+              <Input
+                id="traial_times"
+                variant="filled"
+                value={formValues.traial_times}
+                placeholder="traial_times"
+                onChange={(e) => handleChange('traial_times', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">threshold</FormLabel>
+              <Input
+                id="threshold"
+                variant="filled"
+                value={formValues.threshold}
+                placeholder="threshold"
+                onChange={(e) => handleChange('threshold', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">scale</FormLabel>
+              <Input
+                id="scale"
+                variant="filled"
+                value={formValues.scale}
+                placeholder="scale"
+                onChange={(e) => handleChange('scale', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">variance</FormLabel>
+              <Input
+                id="variance"
+                variant="filled"
+                value={formValues.variance}
+                placeholder="variance"
+                onChange={(e) => handleChange('variance', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">y_axis</FormLabel>
+              <Input
+                id="y_axis"
+                variant="filled"
+                value={formValues.y_axis}
+                placeholder="y_axis"
+                onChange={(e) => handleChange('y_axis', e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="name">x_axis</FormLabel>
+              <Input
+                id="x_axis"
+                variant="filled"
+                value={formValues.x_axis}
+                placeholder="x_axis"
+                onChange={(e) => handleChange('x_axis', e.target.value)}
+              />
+            </FormControl>
 
             {/* <FormControl >
             <FormLabel htmlFor="name">画像を選択してください．</FormLabel>
@@ -201,15 +276,10 @@ const Home: NextPage = () => {
               isLoading={isSubmitting}
               type="submit"
             >
-              QRコードを作成する
+              Submit
             </Button>
-            <Button
-              mt={4}
-              ml="4"
-              colorScheme="teal"
-              onClick={onClickCheckButton}
-            >
-              他の画像を選ぶ
+            <Button mt={4} colorScheme="teal" onClick={onClickCheckButton}>
+              Check
             </Button>
           </chakra.form>
         ) : null}
@@ -257,4 +327,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Full;

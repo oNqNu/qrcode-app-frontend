@@ -99,7 +99,6 @@ const Home: NextPage = () => {
     reader.readAsDataURL(img);
     reader.onload = () => {
       if (reader.result == null) return;
-      console.log('aaa');
       console.log(reader.result);
       setSelectedImgStr(reader.result);
 

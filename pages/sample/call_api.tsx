@@ -59,7 +59,9 @@ const DisplayQrcode: NextPage = () => {
     if (!e.target.files) return;
     const reader = new FileReader();
     const img: File = e.target.files[0];
-    // const image = new Image();
+
+    if (img == null) return;
+
     reader.readAsDataURL(img);
     reader.onload = () => {
       if (reader.result == null) return;

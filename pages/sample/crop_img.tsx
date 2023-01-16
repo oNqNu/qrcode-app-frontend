@@ -8,12 +8,14 @@ import 'react-image-crop/dist/ReactCrop.css';
 
 const CropImg: NextPage = () => {
   const [imgStr, setImgStr] = useState('');
+  const [isGetOriginalImgSize, setIsGetOriginalImgSize] = useState(false);
   const [isgeneratedQrcode, setIsgeneratedQrcode] = useState(false);
   const [parameters, setParameters] = useState({
     central_x_coordinate: '',
     central_y_coordinate: '',
     y_axis: '',
     x_axis: '',
+    scale: '',
   });
   const [originalImgSize, setOriginalImgSize] = useState({
     x: 0,
@@ -28,7 +30,7 @@ const CropImg: NextPage = () => {
   });
 
   function getImgSize() {
-    console.log('clicked 画像サイズ取得 button');
+    console.log('execute getImgSize');
     var element: HTMLImageElement | null = document.getElementById(
       'crop'
     ) as HTMLImageElement;
@@ -37,6 +39,7 @@ const CropImg: NextPage = () => {
     var height = element.naturalHeight;
     handleChangeOriginalImgSize('x', width);
     handleChangeOriginalImgSize('y', height);
+    setIsGetOriginalImgSize(true);
   }
 
   function calculateParameters() {
@@ -56,6 +59,12 @@ const CropImg: NextPage = () => {
       'y_axis',
       String((crop.y + crop.height / 2) / originalImgSize.y)
     );
+
+    if (originalImgSize.x >= originalImgSize.y) {
+      handleChangeParameter('scale', String(crop.height / originalImgSize.y));
+    } else {
+      handleChangeParameter('scale', String(crop.width / originalImgSize.x));
+    }
   }
 
   function handleChangeParameter(name: string, value: string) {
@@ -84,6 +93,7 @@ const CropImg: NextPage = () => {
           crop={crop}
           aspect={1}
           onChange={(c) => {
+            if (!isGetOriginalImgSize) getImgSize();
             setCrop(c);
             console.log(crop);
             calculateParameters();

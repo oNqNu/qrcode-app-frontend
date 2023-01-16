@@ -9,6 +9,16 @@ import 'react-image-crop/dist/ReactCrop.css';
 const CropImg: NextPage = () => {
   const [imgStr, setImgStr] = useState('');
   const [isgeneratedQrcode, setIsgeneratedQrcode] = useState(false);
+  const [parameters, setParameters] = useState({
+    central_x_coordinate: '',
+    central_y_coordinate: '',
+    y_axis: '',
+    x_axis: '',
+  });
+  const [originalImgSize, setOriginalImgSize] = useState({
+    x: 0,
+    y: 0,
+  });
   const [crop, setCrop] = useState<Crop>({
     unit: 'px', // Can be 'px' or '%'
     x: 25,
@@ -25,8 +35,37 @@ const CropImg: NextPage = () => {
     if (element == null) return;
     var width = element.naturalWidth;
     var height = element.naturalHeight;
-    console.log(width);
-    console.log(height);
+    handleChangeOriginalImgSize('x', width);
+    handleChangeOriginalImgSize('y', height);
+  }
+
+  function calculateParameters() {
+    handleChangeParameter(
+      'central_x_coordinate',
+      String(crop.x + crop.width / 2)
+    );
+    handleChangeParameter(
+      'central_y_coordinate',
+      String(crop.y + crop.width / 2)
+    );
+    handleChangeParameter(
+      'x_axis',
+      String((crop.x + crop.width / 2) / originalImgSize.x)
+    );
+    handleChangeParameter(
+      'y_axis',
+      String((crop.y + crop.height / 2) / originalImgSize.y)
+    );
+  }
+
+  function handleChangeParameter(name: string, value: string) {
+    console.log(`${name};${value}`);
+    setParameters((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleChangeOriginalImgSize(name: string, value: number) {
+    console.log(`${name};${value}`);
+    setOriginalImgSize((prev) => ({ ...prev, [name]: value }));
   }
 
   return (
@@ -47,6 +86,7 @@ const CropImg: NextPage = () => {
           onChange={(c) => {
             setCrop(c);
             console.log(crop);
+            calculateParameters();
           }}
         >
           <img id="crop" src="/abe.jpg" alt="切り抜き前画像" />
@@ -60,7 +100,15 @@ const CropImg: NextPage = () => {
           >
             画像サイズ取得
           </Button>
-          <Button colorScheme="green">必要パラメータを算出</Button>
+          <Button
+            colorScheme="green"
+            onClick={() => {
+              console.log('clicked 必要パラメータ算出 button');
+              console.log(parameters);
+            }}
+          >
+            必要パラメータを算出
+          </Button>
         </Flex>
       </Flex>
     </div>

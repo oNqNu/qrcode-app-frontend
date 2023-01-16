@@ -17,6 +17,18 @@ const CropImg: NextPage = () => {
     height: 50,
   });
 
+  function getImgSize() {
+    console.log('clicked 画像サイズ取得 button');
+    var element: HTMLImageElement | null = document.getElementById(
+      'crop'
+    ) as HTMLImageElement;
+    if (element == null) return;
+    var width = element.naturalWidth;
+    var height = element.naturalHeight;
+    console.log(width);
+    console.log(height);
+  }
+
   return (
     <div>
       <Head>
@@ -43,15 +55,7 @@ const CropImg: NextPage = () => {
           <Button
             colorScheme="facebook"
             onClick={() => {
-              console.log('clicked 画像サイズ取得 button');
-              var element: HTMLImageElement | null = document.getElementById(
-                'crop'
-              ) as HTMLImageElement;
-              if (element == null) return;
-              var width = element.naturalWidth;
-              var height = element.naturalHeight;
-              console.log(width);
-              console.log(height);
+              getImgSize();
             }}
           >
             画像サイズ取得

@@ -1,25 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
-import Image from 'next/image';
-// import { Image as NextImage } from 'next/image';
+import { Button, Flex, Heading, Text } from '@chakra-ui/react';
 import Head from 'next/head';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import ReactCrop, { Crop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import {
-  chakra,
-  Heading,
-  Text,
-  Flex,
-  FormLabel,
-  FormControl,
-  Input,
-  Button,
-  Center,
-} from '@chakra-ui/react';
-import { useState } from 'react';
-import { BiDownload } from 'react-icons/bi';
 
 const CropImg: NextPage = () => {
   const [imgStr, setImgStr] = useState('');
@@ -31,20 +16,6 @@ const CropImg: NextPage = () => {
     width: 50,
     height: 50,
   });
-
-  async function handleOnClick() {
-    console.log('clickled button');
-    try {
-      const response = await axios.get(
-        'https://design-qrcode-api.herokuapp.com/api/get_sample'
-      );
-      setImgStr(response.data);
-      setIsgeneratedQrcode(true);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   return (
     <div>

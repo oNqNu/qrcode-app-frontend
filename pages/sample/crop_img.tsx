@@ -68,6 +68,25 @@ const CropImg: NextPage = () => {
         >
           <img id="crop" src="/abe.jpg" alt="切り抜き前画像" />
         </ReactCrop>
+        <Flex mt="4" gap="8">
+          <Button
+            colorScheme="facebook"
+            onClick={() => {
+              console.log('clicked 画像サイズ取得 button');
+              var element: HTMLImageElement | null = document.getElementById(
+                'crop'
+              ) as HTMLImageElement;
+              if (element == null) return;
+              var width = element.naturalWidth;
+              var height = element.naturalHeight;
+              console.log(width);
+              console.log(height);
+            }}
+          >
+            画像サイズ取得
+          </Button>
+          <Button colorScheme="green">必要パラメータを算出</Button>
+        </Flex>
       </Flex>
     </div>
   );

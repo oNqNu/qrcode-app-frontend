@@ -4,7 +4,6 @@ import Image from 'next/image';
 // import { Image as NextImage } from 'next/image';
 import Head from 'next/head';
 import axios from 'axios';
-import { useForm } from 'react-hook-form';
 import ReactCrop, { Crop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import {
@@ -20,16 +19,16 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BiDownload } from 'react-icons/bi';
+import { formItems } from './assets';
 
 const Home: NextPage = () => {
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm();
+  enum DisplayMode {
+    SelectImg = 'select img',
+    CropImg = 'scrop img',
+    InputParameter = 'input parameter',
+  }
 
   const [formValues, setFormValues] = useState({
-    file_path: '',
     img_string: '',
     data: 'https://www.okayama-u.ac.jp',
     version: '5',
@@ -47,17 +46,30 @@ const Home: NextPage = () => {
   const [selectedImgStr, setSelectedImgStr] = useState('');
   const [isDisplayResult, setIsDisplayResult] = useState(false);
   const [selectedImageSize, setSelectedImageSize] = useState({ x: 0, y: 0 });
-  const [crop, setCrop] = useState<Crop>({
-    unit: 'px', // Can be 'px' or '%'
-    x: 25,
-    y: 25,
-    width: 50,
-    height: 50,
+  const [isGetOriginalImgSize, setIsGetOriginalImgSize] = useState(false);
+  const [originalImgSize, setOriginalImgSize] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [displayMode, setDisplayMode] = useState<DisplayMode>(
+    DisplayMode.SelectImg
+  );
+
+  const [parameters, setParameters] = useState({
+    central_x_coordinate: '',
+    central_y_coordinate: '',
+    y_axis: '',
+    x_axis: '',
+    scale: '',
   });
 
-  function handleChange(name, value) {
-    setFormValues((prev) => ({ ...prev, [name]: value }));
-  }
+  const [crop, setCrop] = useState<Crop>({
+    unit: 'px', // Can be 'px' or '%'
+    x: 100,
+    y: 100,
+    width: 150,
+    height: 150,
+  });
 
   async function onSubmit() {
     console.log(formValues);
@@ -75,64 +87,89 @@ const Home: NextPage = () => {
     }
   }
 
-  async function onClickCheckButton() {
-    // console.log(formValues);
-    // try {
-    //   const response = await axios.get("http://localhost:8080/api/qr-test");
-    //   setresultImgStr(response.data);
-    //   setIsDisplayResult(true);
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.error(error);
-    // }
-    // const image = new Image();
-    // image.src = selectedImgStr;
-    // const size = { width: image.width, height: image.height };
-    // console.log(size);
-  }
-
-  const handleOnAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleOnAddImage(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) return;
     const reader = new FileReader();
     const img: File = e.target.files[0];
-    // const image = new Image();
+
+    if (img == null) return;
+
     reader.readAsDataURL(img);
     reader.onload = () => {
       if (reader.result == null) return;
-      console.log('aaa');
+      console.log('フォームで選択された画像(base64)');
       console.log(reader.result);
-      setSelectedImgStr(reader.result);
 
       const data_uri = reader.result;
-      if (data_uri == null) return;
       console.log(data_uri);
-      handleChange('img_string', data_uri);
+      handleChangeFormValues('img_string', data_uri);
+      console.log(formValues);
     };
-  };
+    setDisplayMode(DisplayMode.CropImg);
+  }
+  function calculateParameters() {
+    handleChangeParameter(
+      'central_x_coordinate',
+      String(crop.x + crop.width / 2)
+    );
+    handleChangeParameter(
+      'central_y_coordinate',
+      String(crop.y + crop.width / 2)
+    );
+    handleChangeParameter(
+      'x_axis',
+      String(roundFloat((crop.x + crop.width / 2) / originalImgSize.x))
+    );
+    handleChangeParameter(
+      'y_axis',
+      String(roundFloat((crop.y + crop.height / 2) / originalImgSize.y))
+    );
 
-  async function postData() {
-    try {
-      const response = await axios.post('http://localhost:8080/api/post_test', {
-        file_path: 'src/main/resources/img/abe.jpg',
-        data: 'https://www.okayama-u.ac.jp',
-        version: '5',
-        ecc_level: '0',
-        encoding: '0',
-        mask_pattern: '0',
-        traial_times: '100',
-        threshold: '96',
-        scale: '50',
-        variance: '0.7',
-        y_axis: '0.3',
-        x_axis: '0.6',
-      });
-      setresultImgStr(response.data);
-      setIsDisplayResult(true);
-      console.log(typeof response.data);
-    } catch (error) {
-      console.error(error);
+    if (originalImgSize.x >= originalImgSize.y) {
+      handleChangeParameter(
+        'scale',
+        String(roundFloat(crop.height / originalImgSize.y))
+      );
+    } else {
+      handleChangeParameter(
+        'scale',
+        String(roundFloat(crop.width / originalImgSize.x))
+      );
     }
   }
+
+  function getImgSize() {
+    console.log('execute getImgSize');
+    var element: HTMLImageElement | null = document.getElementById(
+      'crop'
+    ) as HTMLImageElement;
+    if (element == null) return;
+    var width = element.naturalWidth;
+    var height = element.naturalHeight;
+    handleChangeOriginalImgSize('x', width);
+    handleChangeOriginalImgSize('y', height);
+    setIsGetOriginalImgSize(true);
+  }
+
+  // 数値の小数点以下を丸める関数．デフォルトでは小数点第三位以下を切り捨てする仕様にした．
+  function roundFloat(input: number, digit = 100) {
+    return Math.round(input * digit) / digit;
+  }
+
+  function handleChangeFormValues(name: string, value: string) {
+    setFormValues((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleChangeParameter(name: string, value: string) {
+    console.log(`${name};${value}`);
+    setParameters((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleChangeOriginalImgSize(name: string, value: number) {
+    console.log(`${name};${value}`);
+    setOriginalImgSize((prev) => ({ ...prev, [name]: value }));
+  }
+
   return (
     <div>
       <Head>
@@ -140,27 +177,16 @@ const Home: NextPage = () => {
         <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Flex flexDirection={'column'} alignItems={'center'} py={'12'}>
         <Heading size={'3xl'}>Design QRcode Generator</Heading>
-
-        <Text fontSize={'2xl'} pt={'4'}>
-          デザインQRコードを生成するアプリです
-        </Text>
-        {/* <ReactCrop
-          crop={crop}
-          onChange={(c) => {
-            setCrop(c);
-            console.log(crop);
-          }}
-        >
-          <img id="crop" src="abe.jpg" />
-        </ReactCrop> */}
-        {!isDisplayResult ? (
-          <chakra.form onSubmit={handleSubmit(onSubmit)} pt={'4'} w={'xl'}>
-            <FormControl>
-              <FormLabel htmlFor="name">背景に設定する画像</FormLabel>
+        {displayMode == DisplayMode.SelectImg && (
+          <>
+            <Text fontSize={'2xl'} pt={'4'}>
+              QRコードの背景画像に設定する画像を選択してください．
+            </Text>
+            <FormControl w="xl">
               <Input
+                mt="4"
                 type="file"
                 accept="image/*,.png,.jpg,.jpeg,"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,90 +194,81 @@ const Home: NextPage = () => {
                 }}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="name">data</FormLabel>
-              <Input
-                id="data"
-                variant="filled"
-                value={formValues.data}
-                placeholder="data"
-                onChange={(e) => handleChange('data', e.target.value)}
-                mb="12"
-              />
-            </FormControl>
-            {!!selectedImgStr ? (
-              <ReactCrop
-                crop={crop}
-                onChange={(c) => {
-                  setCrop(c);
-                  console.log(crop);
-                }}
-              >
-                <img id="crop" src={`${selectedImgStr}`} />
-              </ReactCrop>
-            ) : null}
-
-            {/* <FormControl >
-            <FormLabel htmlFor="name">画像を選択してください．</FormLabel>
-            <Input id="name" type="file" />
-          </FormControl> */}
-            <Button
-              mt={4}
-              colorScheme="teal"
-              isLoading={isSubmitting}
-              type="submit"
-            >
-              QRコードを作成する
-            </Button>
-            <Button
-              mt={4}
-              ml="4"
-              colorScheme="teal"
-              onClick={onClickCheckButton}
-            >
-              他の画像を選ぶ
-            </Button>
-          </chakra.form>
-        ) : null}
-
-        {isDisplayResult ? (
+          </>
+        )}
+        {displayMode == DisplayMode.CropImg && (
           <>
-            <NextImage
-              src={`data:image/jpeg;base64,${resultImgStr}`}
-              alt="デザインQRコードです"
-              width={400}
-              height={400}
-            />
-            <Flex gap={12}>
+            <Text fontSize={'2xl'} pt={'4'}>
+              QRコード化する範囲を指定してください．
+            </Text>
+            <ReactCrop
+              crop={crop}
+              aspect={1}
+              onChange={(c) => {
+                if (!isGetOriginalImgSize) getImgSize();
+                setCrop(c);
+                console.log(crop);
+                calculateParameters();
+              }}
+            >
+              <img
+                id="crop"
+                src={`${formValues.img_string}`}
+                alt="切り抜き前画像"
+              />
+            </ReactCrop>
+            <Flex mt="4" gap="8">
               <Button
-                mt={4}
-                colorScheme="blue"
+                colorScheme="facebook"
                 onClick={() => {
-                  setIsDisplayResult(false);
+                  console.log('clicked 確定 button');
+                  handleChangeFormValues('scale', parameters.scale);
+                  handleChangeFormValues('x_axis', parameters.x_axis);
+                  handleChangeFormValues('y_axis', parameters.y_axis);
+                  setDisplayMode(DisplayMode.InputParameter);
                 }}
               >
-                別の画像で試す
+                確定
               </Button>
               <Button
-                as="a"
-                href={`data:image/jpeg;base64,${resultImgStr}`}
-                download
-                bgColor="green.500"
-                color="white"
-                mt="4"
-                mr="4"
-                _hover={{
-                  color: 'blue.500',
-                  bgColor: 'white',
-                  border: '1px',
-                  borderColor: 'blue.500',
+                colorScheme="green"
+                onClick={() => {
+                  console.log('clicked 必要パラメータ算出 button');
+                  console.log(parameters);
                 }}
               >
-                <BiDownload size="30px" />
+                必要パラメータを算出
               </Button>
             </Flex>
           </>
-        ) : null}
+        )}
+        {displayMode == DisplayMode.InputParameter && (
+          <>
+            {formItems.map((item) => (
+              <>
+                <FormLabel htmlFor="name">{item.name}</FormLabel>
+                <Input
+                  key={item.label}
+                  w="xl"
+                  id={item.label}
+                  variant="filled"
+                  value={formValues[item.label]}
+                  placeholder={item.label}
+                  onChange={(e) =>
+                    handleChangeFormValues(item.label, e.target.value)
+                  }
+                />
+              </>
+            ))}
+          </>
+        )}
+        <Button
+          onClick={() => {
+            console.log(formValues);
+          }}
+        >
+          test
+        </Button>
       </Flex>
     </div>
   );

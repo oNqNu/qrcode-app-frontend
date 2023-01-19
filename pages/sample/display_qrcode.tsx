@@ -23,15 +23,17 @@ import { BiDownload } from 'react-icons/bi';
 
 const DisplayQrcode: NextPage = () => {
   const [imgStr, setImgStr] = useState('');
+  const [fullimgStr, setFullImgStr] = useState('');
   const [isgeneratedQrcode, setIsgeneratedQrcode] = useState(false);
 
   async function handleOnClick() {
     console.log('clickled button');
     try {
       const response = await axios.get(
-        'https://design-qrcode-api.herokuapp.com/api/get_sample'
+        'https://design-qrcode-api.herokuapp.com/api/get_test'
       );
-      setImgStr(response.data);
+      setImgStr(response.data.qrcode_base64);
+      setFullImgStr(response.data.output_base64);
       setIsgeneratedQrcode(true);
       console.log(response.data);
     } catch (error) {
@@ -54,6 +56,9 @@ const DisplayQrcode: NextPage = () => {
         </Text>
         {isgeneratedQrcode ? (
           <>
+            <Text fontSize={'2xl'} pt={'4'} fontWeight="bold">
+              QRコード化した部分
+            </Text>
             <img
               src={`data:image/jpeg;base64,${imgStr}`}
               alt="デザインQRコード"
@@ -72,6 +77,43 @@ const DisplayQrcode: NextPage = () => {
               <Button
                 as="a"
                 href={`data:image/jpeg;base64,${imgStr}`}
+                download
+                bgColor="green.500"
+                color="white"
+                mt="4"
+                mr="4"
+                _hover={{
+                  color: 'blue.500',
+                  bgColor: 'white',
+                  border: '1px',
+                  borderColor: 'blue.500',
+                }}
+              >
+                <BiDownload size="30px" />
+              </Button>
+            </Flex>
+
+            <Text fontSize={'2xl'} pt={'4'} fontWeight="bold">
+              背景画像全体
+            </Text>
+            <img
+              src={`data:image/jpeg;base64,${fullimgStr}`}
+              alt="デザインQRコード"
+            />
+            <Flex gap={12}>
+              <Button
+                onClick={() => {
+                  setIsgeneratedQrcode(false);
+                  setImgStr('');
+                }}
+                colorScheme="blue"
+                mt="4"
+              >
+                やり直す
+              </Button>
+              <Button
+                as="a"
+                href={`data:image/jpeg;base64,${fullimgStr}`}
                 download
                 bgColor="green.500"
                 color="white"

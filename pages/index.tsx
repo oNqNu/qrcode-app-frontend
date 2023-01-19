@@ -32,7 +32,7 @@ const Home: NextPage = () => {
     IsLoading = 'is loading',
   }
 
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<any>({
     img_string: '',
     data: 'https://www.okayama-u.ac.jp',
     version: '5',
@@ -146,8 +146,8 @@ const Home: NextPage = () => {
     return Math.round(input * digit) / digit;
   }
 
-  function handleChangeFormValues(name: string, value: string) {
-    setFormValues((prev) => ({ ...prev, [name]: value }));
+  function handleChangeFormValues(name: string, value: string | ArrayBuffer) {
+    setFormValues((prev: any) => ({ ...prev, [name]: value }));
   }
 
   function handleChangeParameter(name: string, value: string) {
@@ -259,7 +259,7 @@ const Home: NextPage = () => {
         )}
         {displayMode == DisplayMode.InputParameter && (
           <>
-            {formItems.map((item) => (
+            {formItems.map((item: { label: string; name: string }) => (
               <Box key={item.label}>
                 <FormLabel htmlFor="name" mt="4" w="max" fontWeight="bold">
                   {item.name}

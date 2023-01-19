@@ -350,7 +350,7 @@ const Home: NextPage = () => {
               </Button>
               <Button
                 as="a"
-                href={`data:image/jpeg;base64,${resultImgStr}`}
+                href={`data:image/jpeg;base64,${resultQrcodeStr}`}
                 download
                 bgColor="green.500"
                 color="white"

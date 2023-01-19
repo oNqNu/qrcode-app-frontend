@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BiDownload } from 'react-icons/bi';
-import formItems from './assets';
+import formItems from '../assets';
 
 const Home: NextPage = () => {
   enum DisplayMode {

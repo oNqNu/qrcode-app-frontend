@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/project_name' : '',
+  assetPrefix: '/qrcode-app-frontend',
 };
 
 module.exports = nextConfig;

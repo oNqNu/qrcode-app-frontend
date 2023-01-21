@@ -186,10 +186,12 @@ const CompareOptimizedImg: NextPage = () => {
             </Flex>
             <Text fontSize={'2xl'} pt={'4'} fontWeight="bold" color="blue.400">
               約
-              {100 -
-                roundFloat(
-                  (imgDataByte.compressedImg / imgDataByte.originalImg) * 100
-                )}
+              {roundFloat(
+                100 -
+                  roundFloat(
+                    (imgDataByte.compressedImg / imgDataByte.originalImg) * 100
+                  )
+              )}
               %のデータ量削減
             </Text>
             <Flex mt="4" gap="8">

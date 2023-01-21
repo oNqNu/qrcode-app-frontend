@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
 import Image from 'next/image';
-// import { Image as NextImage } from 'next/image';
 import Head from 'next/head';
 import axios from 'axios';
 import ReactCrop, { Crop } from 'react-image-crop';
@@ -87,7 +86,6 @@ const Home: NextPage = () => {
     reader.onload = () => {
       if (reader.result == null) return;
       console.log('フォームで選択された画像(base64)');
-      console.log(reader.result);
 
       const data_uri = reader.result;
       console.log(data_uri);
@@ -222,6 +220,9 @@ const Home: NextPage = () => {
                   console.log(crop);
                   calculateParameters();
                   console.log({ originalImgSize });
+                  var element: HTMLImageElement | null =
+                    document.getElementById('crop') as HTMLImageElement;
+                  console.log({ 'element.currentSrc': element.currentSrc });
                 }}
               >
                 <chakra.img

@@ -55,7 +55,7 @@ const CompareOptimizedImg: NextPage = () => {
     if (originalImg == null) return;
 
     new Compressor(originalImg, {
-      quality: 0.2,
+      quality: 0.5,
 
       success(result) {
         const compressedImg: File = result as File;

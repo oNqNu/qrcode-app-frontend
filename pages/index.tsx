@@ -86,7 +86,7 @@ const Home: NextPage = () => {
     console.log('img !== null');
 
     new Compressor(img, {
-      quality: 0.2,
+      quality: 0.5,
 
       success(result) {
         const compressedImg: File = result as File;

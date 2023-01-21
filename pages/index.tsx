@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
-import Image from 'next/image';
 import Head from 'next/head';
 import axios from 'axios';
 import ReactCrop, { Crop } from 'react-image-crop';

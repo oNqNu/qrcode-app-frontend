@@ -171,17 +171,14 @@ const CompareOptimizedImg: NextPage = () => {
                 <Text fontSize={'2xl'} pt={'4'} fontWeight="bold">
                   圧縮後の画像
                 </Text>
-                <Box position="relative" w="500px" height="450px">
-                  {compressedImgStr && (
-                    <Image
-                      id="use-next-image"
-                      src={`${compressedImgStr}`}
-                      alt="圧縮後の画像"
-                      layout="fill"
-                      objectFit="contain"
-                    />
-                  )}
-                </Box>
+                <chakra.img
+                  id="not-use-next-image"
+                  src={`${compressedImgStr}`}
+                  alt="圧縮後の原画像"
+                  objectFit="contain"
+                  w="500px"
+                  h="450px"
+                />
                 <Text fontSize={'2xl'} pt={'4'}>
                   データサイズ: {imgDataByte.compressedImg} byte
                 </Text>

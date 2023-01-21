@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
 import Image from 'next/image';
-// import { Image as NextImage } from 'next/image';
 import Head from 'next/head';
 import axios from 'axios';
 import ReactCrop, { Crop } from 'react-image-crop';
@@ -21,6 +20,7 @@ import {
 import { useState } from 'react';
 import { BiDownload } from 'react-icons/bi';
 import formItems from '../assets';
+import Compressor from 'compressorjs';
 
 const Home: NextPage = () => {
   enum DisplayMode {
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
     ecc_level: '0',
     encoding: '0',
     mask_pattern: '0',
-    traial_times: '100',
+    traial_times: '50',
     threshold: '96',
     scale: '50',
     variance: '0.7',
@@ -83,19 +83,34 @@ const Home: NextPage = () => {
 
     if (img == null) return;
 
-    reader.readAsDataURL(img);
-    reader.onload = () => {
-      if (reader.result == null) return;
-      console.log('フォームで選択された画像(base64)');
-      console.log(reader.result);
+    console.log('img !== null');
 
-      const data_uri = reader.result;
-      console.log(data_uri);
-      handleChangeFormValues('img_string', data_uri);
-      console.log(formValues);
-    };
-    setDisplayMode(DisplayMode.CropImg);
+    new Compressor(img, {
+      quality: 0.2,
+
+      success(result) {
+        const compressedImg: File = result as File;
+
+        console.log({ result });
+
+        reader.readAsDataURL(compressedImg);
+        reader.onload = () => {
+          if (reader.result == null) return;
+          console.log('圧縮後の画像(base64)');
+
+          const compressed_data_uri = reader.result;
+          handleChangeFormValues('img_string', compressed_data_uri);
+          console.log({ compressed_data_uri });
+        };
+        setDisplayMode(DisplayMode.CropImg);
+      },
+      error(err) {
+        console.log(err.message);
+        console.log('Compressorが上手く動いていない');
+      },
+    });
   }
+
   function calculateParameters() {
     handleChangeParameter(
       'central_x_coordinate',
@@ -222,6 +237,9 @@ const Home: NextPage = () => {
                   console.log(crop);
                   calculateParameters();
                   console.log({ originalImgSize });
+                  var element: HTMLImageElement | null =
+                    document.getElementById('crop') as HTMLImageElement;
+                  console.log({ 'element.currentSrc': element.currentSrc });
                 }}
               >
                 <chakra.img

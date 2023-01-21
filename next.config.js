@@ -8,14 +8,4 @@ const nextConfig = {
   assetPrefix: process.env.GITHUB_PAGES ? '/qrcode-app-frontend' : '',
 };
 
-module.exports = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.node = {
-        fs: 'empty',
-      };
-    }
-
-    return nextConfig;
-  },
-};
+module.exports = nextConfig;

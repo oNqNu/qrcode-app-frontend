@@ -19,6 +19,7 @@ import {
 import { useState } from 'react';
 import { BiDownload } from 'react-icons/bi';
 import formItems from '../assets';
+import { base64LoadingGif } from '../assets';
 import Compressor from 'compressorjs';
 
 const Home: NextPage = () => {
@@ -320,7 +321,7 @@ const Home: NextPage = () => {
           <Flex mt="100" flexFlow="column">
             <Text fontSize="4xl">デザインQRコードを作成中...</Text>
             <chakra.img
-              src="/loading.gif"
+              src={base64LoadingGif}
               alt="loading"
               width="100px"
               height="100px"

@@ -153,7 +153,7 @@ const CompareOptimizedImg: NextPage = () => {
             <Flex>
               <Box width="550px">
                 <Text fontSize={'2xl'} pt={'4'} fontWeight="bold">
-                  圧縮前の原画像
+                  圧縮前の原画像画面です
                 </Text>
                 <chakra.img
                   id="not-use-next-image"

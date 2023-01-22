@@ -9,12 +9,11 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
+import Compressor from 'compressorjs';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useState } from 'react';
 import 'react-image-crop/dist/ReactCrop.css';
-import Compressor from 'compressorjs';
 
 const CompareOptimizedImg: NextPage = () => {
   enum DisplayMode {
@@ -153,7 +152,7 @@ const CompareOptimizedImg: NextPage = () => {
             <Flex>
               <Box width="550px">
                 <Text fontSize={'2xl'} pt={'4'} fontWeight="bold">
-                  圧縮前の原画像画面です
+                  圧縮前の原画像
                 </Text>
                 <chakra.img
                   id="not-use-next-image"

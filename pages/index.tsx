@@ -83,6 +83,11 @@ const Home: NextPage = () => {
 
     if (img == null) return;
 
+    if (img.size > 1024 * 1024 * 7) {
+      alert('7MB以上のファイルは扱うことができません'); // エラーメッセージを表示
+      return;
+    }
+
     console.log('img !== null');
 
     new Compressor(img, {
@@ -277,6 +282,9 @@ const Home: NextPage = () => {
         )}
         {displayMode == DisplayMode.InputParameter && (
           <>
+            <Text fontSize={'2xl'} mt="4">
+              パラメータを入力してください．
+            </Text>
             {formItems.map((item: { label: string; name: string }) => (
               <Box key={item.label}>
                 <FormLabel htmlFor="name" mt="4" w="max" fontWeight="bold">
@@ -285,6 +293,7 @@ const Home: NextPage = () => {
                 <Input
                   key={item.label}
                   w="xl"
+                  borderColor="blackAlpha.400"
                   id={item.label}
                   variant="filled"
                   value={formValues[item.label]}

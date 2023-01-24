@@ -36,7 +36,7 @@ const Home: NextPage = () => {
     img_string: '',
     data: 'https://www.okayama-u.ac.jp',
     version: '5',
-    ecc_level: '0',
+    ecc_level: '1',
     encoding: '0',
     mask_pattern: '0',
     traial_times: '50',
@@ -84,7 +84,11 @@ const Home: NextPage = () => {
     if (img == null) return;
 
     if (img.size > 1024 * 1024 * 7) {
-      alert('7MB以上のファイルは扱うことができません'); // エラーメッセージを表示
+      alert(
+        `7MB以上のファイルは扱うことができません\n入力されたファイルサイズは${roundFloat(
+          img.size / 1024 / 1024
+        )}MBです`
+      ); // エラーメッセージを表示
       return;
     }
 

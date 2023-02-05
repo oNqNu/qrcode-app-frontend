@@ -187,12 +187,17 @@ const Home: NextPage = () => {
   async function hundleSubmit() {
     console.log('execute onSubmit');
     console.log(formValues);
+    const startTime = Date.now(); // 開始時間
+
     try {
       setDisplayMode(DisplayMode.IsLoading);
       const response = await axios.post(
         'https://design-qrcode-api.herokuapp.com/api/create_qrcode',
         formValues
       );
+      const endTime = Date.now(); // 終了時間
+      console.log('API応答時間');
+      console.log(endTime - startTime); // 何ミリ秒かかったかを表示する
       setResultQrcodeStr(response.data.qrcode_base64);
       setResultImgStr(response.data.output_base64);
       console.log('response.data');
@@ -303,9 +308,10 @@ const Home: NextPage = () => {
                   value={formValues[item.label]}
                   placeholder={item.label}
                   backgroundColor="blue.50"
-                  onChange={(e) =>
-                    handleChangeFormValues(item.label, e.target.value)
-                  }
+                  onChange={(e) => {
+                    handleChangeFormValues(item.label, e.target.value);
+                    console.log(originalImgSize);
+                  }}
                 />
               </Box>
             ))}

@@ -36,7 +36,7 @@ const Home: NextPage = () => {
     img_string: '',
     data: 'https://www.okayama-u.ac.jp',
     version: '5',
-    ecc_level: '1',
+    ecc_level: '0',
     encoding: '0',
     mask_pattern: '0',
     traial_times: '50',

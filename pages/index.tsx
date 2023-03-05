@@ -85,7 +85,7 @@ const Home: NextPage = () => {
 
     if (img.size > 1024 * 1024 * 3) {
       alert(
-        `7MB以上のファイルは扱うことができません\n入力されたファイルサイズは${roundFloat(
+        `3MB以上のファイルは扱うことができません\n入力されたファイルサイズは${roundFloat(
           img.size / 1024 / 1024
         )}MBです`
       ); // エラーメッセージを表示

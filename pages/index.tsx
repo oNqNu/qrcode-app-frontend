@@ -462,10 +462,18 @@ const Home: NextPage = () => {
             </Flex>
           </>
         )}
-        <Text fontSize="xl" marginTop="8">
+      </Flex>
+      <Box
+        position="sticky"
+        top="100vh"
+        w="100%"
+        h="60px"
+        bgColor="blackAlpha.500"
+      >
+        <Text fontSize="xl">
           ※QRコード (QR Code) は株式会社デンソーウェーブの登録商標です
         </Text>
-      </Flex>
+      </Box>
     </chakra.div>
   );
 };

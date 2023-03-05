@@ -260,7 +260,8 @@ const Home: NextPage = () => {
                   id="crop"
                   src={`${formValues.img_string}`}
                   alt="切り抜き前画像"
-                  maxWidth="550px"
+                  height="auto"
+                  maxWidth="100%"
                 />
               </ReactCrop>
             </Box>
@@ -354,7 +355,7 @@ const Home: NextPage = () => {
             <Center
               bgColor="blackAlpha.400"
               width="700px"
-              height="600px"
+              height="700px"
               mt="12"
               borderRadius="100px"
             >
@@ -410,14 +411,15 @@ const Home: NextPage = () => {
             <Center
               bgColor="blackAlpha.400"
               width="700px"
-              height="600px"
+              height="700px"
               mt="12"
               borderRadius="100px"
             >
               <chakra.img
                 src={`data:image/jpeg;base64,${resultImgStr}`}
                 alt="デザインQRコード"
-                maxW="550px"
+                maxW="580px"
+                maxH="580px"
               />
             </Center>
             <Flex gap={12}>

@@ -192,8 +192,8 @@ const Home: NextPage = () => {
     try {
       setDisplayMode(DisplayMode.IsLoading);
       const response = await axios.post(
-        // 'https://design-qrcode-api.herokuapp.com/api/create_qrcode',
-        'http://localhost:8080/api/create_qrcode',
+        'https://design-qrcode-api.herokuapp.com/api/create_qrcode',
+        // 'http://localhost:8080/api/create_qrcode',
         formValues
       );
       const endTime = Date.now(); // 終了時間

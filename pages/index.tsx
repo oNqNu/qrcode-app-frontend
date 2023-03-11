@@ -242,7 +242,7 @@ const Home: NextPage = () => {
             <Text fontSize={'2xl'} pt={'4'}>
               QRコード化する範囲を指定してください．
             </Text>
-            <Box width="550px">
+            <Center width="550px">
               <ReactCrop
                 crop={crop}
                 aspect={1}
@@ -265,7 +265,7 @@ const Home: NextPage = () => {
                   maxWidth="100%"
                 />
               </ReactCrop>
-            </Box>
+            </Center>
             <Flex mt="4" gap="8">
               <Button
                 colorScheme="facebook"

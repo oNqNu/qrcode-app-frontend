@@ -229,7 +229,7 @@ const Home: NextPage = () => {
                 borderColor="darkgray"
                 fontWeight="black"
                 type="file"
-                accept="image/*,.png,.jpg,.jpeg,"
+                accept="image/*,.jpg,.jpeg,"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   handleOnAddImage(e);
                 }}
@@ -254,6 +254,7 @@ const Home: NextPage = () => {
                   console.log({ originalImgSize });
                   var element: HTMLImageElement | null =
                     document.getElementById('crop') as HTMLImageElement;
+                  handleChangeFormValues('img_string', element.currentSrc);
                   console.log({ 'element.currentSrc': element.currentSrc });
                 }}
               >

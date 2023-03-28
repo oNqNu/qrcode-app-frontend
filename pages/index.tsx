@@ -235,6 +235,7 @@ const Home: NextPage = () => {
                 }}
               />
             </FormControl>
+            <Text>※ jpg, jpeg 形式の画像が利用可能です</Text>
           </Box>
         )}
         {displayMode == DisplayMode.CropImg && (
